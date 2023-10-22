@@ -8,6 +8,7 @@ const TodoInput = ({ newTodo, setNewTodo, handleAddTodo, handleKeyDown }) => {
         placeholder="Add a new todo"
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}
+        onKeyDown={handleKeyDown}
         style={{ width: "70%", marginRight: "10px" }}
       />
       <Button type="primary" onClick={handleAddTodo} onKeyDown={handleKeyDown}>

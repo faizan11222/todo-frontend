@@ -1,37 +1,27 @@
-// TodoList.js
 import React from "react";
-import { List, Checkbox, Button } from "antd";
+import { List, Checkbox, Button, Typography } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
-const TodoList = ({ todos, title, handleToggleTodo, handleDeleteTodo }) => {
+const { Text } = Typography;
+
+const TodoItem = ({ todo, handleToggleTodo, handleDeleteTodo }) => {
   return (
-    <div>
-      <h2>{title}</h2>
-      <List
-        dataSource={todos}
-        renderItem={(item) => (
-          <List.Item
-            actions={[
-              <Checkbox
-                checked={item.completed}
-                onChange={() => handleToggleTodo(item._id, item.completed)}
-                data-testid={`checkbox-${item._id}`}
-              />,
-              <Button
-                onClick={() => handleDeleteTodo(item._id)}
-                data-testid={`delete-button-${item._id}`}
-              >
-                Delete
-              </Button>,
-            ]}
-          >
-            <span className={item.completed ? "completed" : ""}>
-              {item.text}
-            </span>
-          </List.Item>
-        )}
-      />
-    </div>
+    <List.Item
+      actions={[
+        <Checkbox
+          checked={todo.completed}
+          onChange={() => handleToggleTodo(todo._id, todo.completed)}
+        />,
+        <Button
+          type="link"
+          icon={<DeleteOutlined />}
+          onClick={() => handleDeleteTodo(todo._id)}
+        />,
+      ]}
+    >
+      <Text className={todo.completed ? "completed" : ""}>{todo.text}</Text>
+    </List.Item>
   );
 };
 
-export default TodoList;
+export default TodoItem;
