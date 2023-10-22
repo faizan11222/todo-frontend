@@ -14,7 +14,15 @@ export const addTodo = createAsyncThunk("todos/addTodo", async (text) => {
 export const toggleTodo = createAsyncThunk(
   "todos/toggleTodo",
   async ({ id, completed }) => {
-    const response = await todosAPI.updateTodo(id, { completed });
+    const response = await todosAPI.toggleTotdo(id, { completed });
+    return response.data;
+  }
+);
+
+export const editTodo = createAsyncThunk(
+  "todos/editTodo",
+  async ({ _id, text }) => {
+    const response = await todosAPI.updateTodo(_id, { text });
     return response.data;
   }
 );
@@ -44,6 +52,14 @@ const todosSlice = createSlice({
       })
       .addCase(deleteTodo.fulfilled, (state, action) => {
         return state.filter((todo) => todo._id !== action.payload);
+      })
+      .addCase(editTodo.fulfilled, (state, action) => {
+        const index = state.findIndex(
+          (todo) => todo._id === action.payload._id
+        );
+        if (index !== -1) {
+          state[index] = action.payload;
+        }
       });
   },
 });

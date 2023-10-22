@@ -6,6 +6,7 @@ import {
   fetchTodos,
   toggleTodo,
   deleteTodo,
+  editTodo,
 } from "./store/todos/todosSlice";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
@@ -17,6 +18,8 @@ const App = () => {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todos);
   const [newTodo, setNewTodo] = useState("");
+  const [editingTodo, setEditingTodo] = useState(null);
+  const [editingText, setEditingText] = useState("");
 
   useEffect(() => {
     dispatch(fetchTodos());
@@ -68,6 +71,28 @@ const App = () => {
     });
   };
 
+  const startEditing = (todo) => {
+    setEditingTodo(todo);
+    setEditingText(todo.text);
+  };
+
+  const handleUpdateTodo = () => {
+    if (editingText.trim()) {
+      dispatch(editTodo({ ...editingTodo, text: editingText }));
+      setEditingTodo(null);
+      setEditingText("");
+      message.success("Todo updated successfully!");
+    } else {
+      message.error("Please enter a valid todo!");
+    }
+  };
+
+  const handleEditKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleUpdateTodo();
+    }
+  };
+
   return (
     <Layout>
       <Content style={{ padding: "50px", maxWidth: "600px", margin: "0 auto" }}>
@@ -80,8 +105,15 @@ const App = () => {
         <TodoList
           todos={todos.filter((todo) => !todo.completed)}
           title="Remaining"
+          isEditAble
           handleToggleTodo={handleToggleTodo}
           handleDeleteTodo={handleDeleteTodo}
+          editingTodo={editingTodo}
+          editingText={editingText}
+          setEditingText={setEditingText}
+          startEditing={startEditing}
+          handleUpdateTodo={handleUpdateTodo}
+          handleEditKeyDown={handleEditKeyDown}
         />
         <TodoList
           todos={todos.filter((todo) => todo.completed)}

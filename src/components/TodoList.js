@@ -2,7 +2,13 @@ import React from "react";
 import { List, Divider } from "antd";
 import TodoItem from "./TodoItem";
 
-const TodoList = ({ todos, title, handleToggleTodo, handleDeleteTodo }) => {
+const TodoList = ({
+  todos,
+  title,
+  handleToggleTodo,
+  handleDeleteTodo,
+  ...props
+}) => {
   return (
     <>
       <Divider>{title}</Divider>
@@ -13,6 +19,7 @@ const TodoList = ({ todos, title, handleToggleTodo, handleDeleteTodo }) => {
             todo={item}
             handleToggleTodo={handleToggleTodo}
             handleDeleteTodo={handleDeleteTodo}
+            {...props}
           />
         )}
       />
